@@ -50,4 +50,4 @@ logging.basicConfig(level=logging.DEBUG,
 
 logger.debug(f"Debug from {__name__})
 ````
-
+* [https://gist.github.com/aldur/f356f245014523330a7070ab12bcfb1f](https://gist.github.com/aldur/f356f245014523330a7070ab12bcfb1f)
