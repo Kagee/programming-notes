@@ -1,3 +1,16 @@
+# Boilerplate main file
+````python
+#!/usr/bin/env python3
+import logging
+
+logging.basicConfig(level=logging.DEBUG,
+                    style='{',
+                    format='{asctime} [{levelname}] {message} ({name}:{module})',
+                    handlers=[logging.FileHandler(f"{__name__}.log"),
+                              logging.StreamHandler()])
+
+logger = logging.getLogger(__name__)
+````
 # Dates
 ````python
 from datetime import datetime
@@ -14,5 +27,23 @@ with open('path_to_file/person.json', 'r') as f:
   data = json.load(f)
 person = '{"name": "Bob", "languages": ["English", "French"]}'
 person_dict = json.loads(person)
+````
+# Logging
+````python
+import logging
+logger = logging.getLogger(__name__)
+
+# if main file, basicConfig if lazy,
+# https://docs.python.org/3/library/logging.config.html#configuration-dictionary-schema
+logging.config.dictConfig(LOGGING_CONFIG)
+
+#  or dictconfig
+logging.basicConfig(level=logging.DEBUG,
+                    style='{'
+                    format='{asctime} [{levelname}] {message} ({name}:{module})',
+                    handlers=[logging.FileHandler("example1.log"),
+                              logging.StreamHandler()])
+
+logger.debug(f"Debug from {__name__})
 ````
 
