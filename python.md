@@ -6,8 +6,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     style='{',
                     format='{asctime} [{levelname}] {message} ({name}:{module})',
-                    handlers=[logging.FileHandler(f"{__name__}.log"),
-                              logging.StreamHandler()])
+                    handlers=[logging.StreamHandler()])
 
 logger = logging.getLogger(__name__)
 ````
@@ -41,8 +40,10 @@ logging.config.dictConfig(LOGGING_CONFIG)
 logging.basicConfig(level=logging.DEBUG,
                     style='{'
                     format='{asctime} [{levelname}] {message} ({name}:{module})',
-                    handlers=[logging.FileHandler("example1.log"),
-                              logging.StreamHandler()])
+                    handlers=[
+                              # logging.FileHandler(f"{os.path.basename(__file__)}.log"),
+                              logging.StreamHandler()
+                              ])
 
 logger.debug(f"Debug from {__name__})
 ````
