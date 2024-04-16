@@ -11,6 +11,14 @@ logging.basicConfig(level=logging.DEBUG,
 logger = logging.getLogger(__name__)
 
 # Argparse http://kitakitsune.org/argparse_builder/
+
+def main():
+    print("hello world")
+
+
+if __name__ == "__main__":
+    main()
+
 ````
 
 # Dates
