@@ -3,7 +3,7 @@ Toggle with `^B:setw synchronize-panes`
 
 # Boilerplate config
 ````bash
-# .tmux.conf
+# ~/.tmux.conf
 set -g default-terminal "screen-256color"
 set -as terminal-overrides ',*:indn@'
 set -g mouse
