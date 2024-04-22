@@ -18,3 +18,11 @@
 // There was nothing to loop
 {% endfor %}
 ````
+
+# Macros
+````jinja2
+{% macro input(name, value='', type='text', size=20) -%}
+    <input type="{{ type }}" name="{{ name }}" value="{{
+        value|e }}" size="{{ size }}">
+{%- endmacro %}
+````
