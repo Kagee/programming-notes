@@ -1,3 +1,6 @@
+# Where are the bloody settings
+`from django.conf import settings`
+
 # Return file directly
 ````python
 path(
