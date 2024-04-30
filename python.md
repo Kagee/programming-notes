@@ -55,7 +55,9 @@ logging.basicConfig(level=logging.DEBUG,
                               # logging.FileHandler(f"{os.path.basename(__file__)}.log"),
                               logging.StreamHandler()
                               ])
+logger.debug(f"Debug from {__name__})
 ````
+* [https://gist.github.com/aldur/f356f245014523330a7070ab12bcfb1f](https://gist.github.com/aldur/f356f245014523330a7070ab12bcfb1f)
 
 # HTTP server
 Just serve cwd as webpage: `python3 -m http.server 9900`
@@ -101,7 +103,3 @@ class handler(BaseHTTPRequestHandler):
 with HTTPServer(('0.0.0.0', 8013), handler) as server:
     server.serve_forever()
 ````
-
-logger.debug(f"Debug from {__name__})
-````
-* [https://gist.github.com/aldur/f356f245014523330a7070ab12bcfb1f](https://gist.github.com/aldur/f356f245014523330a7070ab12bcfb1f)
