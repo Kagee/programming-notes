@@ -55,6 +55,52 @@ logging.basicConfig(level=logging.DEBUG,
                               # logging.FileHandler(f"{os.path.basename(__file__)}.log"),
                               logging.StreamHandler()
                               ])
+````
+
+# HTTP server
+Just serve cwd as webpage: `python3 -m http.server 9900`
+
+Server for debugging incomming data:
+````python
+from http.server import BaseHTTPRequestHandler, HTTPServer
+# pip install multipart  https://github.com/defnull/multipart
+# NOT python3-multipart
+import multipart as mp
+
+class handler(BaseHTTPRequestHandler):
+    def do_NOTHING(self):
+        logger.debug(self.headers)
+        self.send_response(201, 'No content')
+        self.end_headers()
+
+    def do_GET(self):
+        self.do_NOTHING()
+
+    def do_POST(self):
+        self.do_NOTHING()
+        if "Content-Type" in self.headers and  self.headers["Content-Type"].startswith("multipart/form-data; boundary="):
+            boundary =  self.headers["Content-Type"].split("multipart/form-data; boundary=")[1]
+            logger.debug("Boundary: %s", boundary)
+            content_len = int(self.headers.get('Content-Length'))
+            parsed = mp.MultipartParser(self.rfile, boundary, content_len)
+            for part in parsed.parts():
+                logger.debug(
+                        "name:%s size:%s content_type:%s charset:%s %s:%s%s",
+                        part.name,
+                        part.size,
+                        part.content_type,
+                        part.charset,
+                        "value" if not part.file else "file[:10]",
+                        part.value if not part.file else (
+                          ' '.join(
+                                    ['0x' + format(byte, '02X')
+                                    for byte in part.file.read(10)])),
+                        '' if not part.file else f" filename:{part.filename}"
+                )
+
+with HTTPServer(('0.0.0.0', 8013), handler) as server:
+    server.serve_forever()
+````
 
 logger.debug(f"Debug from {__name__})
 ````
