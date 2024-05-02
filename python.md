@@ -107,58 +107,68 @@ with HTTPServer(('0.0.0.0', 8013), handler) as server:
 
 # PIL fit text in image
 ````python
-   text_im = Image.new(
-        "RGB",
-        size=(630, 210), # w, h
-        color="white",
-    )
+from PIL import Image, ImageDraw, ImageFont
+import textwrap
+import logging
 
-    draw = ImageDraw.Draw(text_im)
-    txt_oneline = "10/20/30pcs NdFeB Magnet Diametrically Magnetized Rod Diameter 6x2 mm Experiment Precision Instrumentation Magnets 6*2 mm"
+logging.basicConfig(level=logging.DEBUG,
+                    style='{',
+                    format='{asctime} [{levelname}] {message} ({name}:{module})',
+                    handlers=[logging.StreamHandler()])
 
-    def get_reaming_pixels(txt, text_im):
-        fontsize = 1  # starting font size
-        font = ImageFont.truetype("arial.ttf", fontsize)
-        _, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
-        im_width, im_height = text_im.size
-        while text_width < im_width and text_height < im_height*0.95:
-            fontsize += 1
-            font = ImageFont.truetype("arial.ttf", fontsize)
-            _, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
-    
-        fontsize -= 1
-        font = ImageFont.truetype("arial.ttf", fontsize)
-        _, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
-        return fontsize, text_width, text_height
+logger = logging.getLogger(__name__)
+text_im = Image.new(
+    "RGB",
+    size=(630, 210), # w, h
+    color="white",
+)
 
+draw = ImageDraw.Draw(text_im)
+txt_oneline = "10/20/30pcs NdFeB Magnet Diametrically Magnetized Rod Diameter 6x2 mm Experiment Precision Instrumentation Magnets 6*2 mm"
+
+def get_reaming_pixels(txt, text_im):
+    fontsize = 1  # starting font size
+    font = ImageFont.truetype("arial.ttf", fontsize)
+    _, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
     im_width, im_height = text_im.size
-    best_font_size = -1
-    best_breaks = -1 
-    prev_remainder = -1
+    while text_width < im_width and text_height < im_height*0.95:
+        fontsize += 1
+        font = ImageFont.truetype("arial.ttf", fontsize)
+        _, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
 
-    # Loop over up to 15 text wrappings, find the image that has the least unuses pixels,
-    # and that textwrap can wrap the text for (no TypeError)
-    for breaks in range(1,15):
-        try:
-            txt = "\n".join(textwrap.wrap(txt_oneline, width=len(txt_oneline)/breaks))
-        except TypeError:
-            logging.error("Gave up wrapping at %s breaks", breaks)
-            break
-        fontsize, w, h = get_reaming_pixels(txt, text_im)
-        remainder = (im_width*im_height) - (w * h)
-        if prev_remainder > -1:
-            if remainder < prev_remainder:
-                best_font_size = fontsize
-                best_breaks = breaks
-        else:
+    fontsize -= 1
+    font = ImageFont.truetype("arial.ttf", fontsize)
+    _, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
+    return fontsize, text_width, text_height
+
+im_width, im_height = text_im.size
+best_font_size = -1
+best_breaks = -1 
+prev_remainder = -1
+
+# Loop over up to 15 text wrappings, find the image that has the least unuses pixels,
+# and that textwrap can wrap the text for (no TypeError)
+for breaks in range(1,15):
+    try:
+        txt = "\n".join(textwrap.wrap(txt_oneline, width=len(txt_oneline)/breaks))
+    except TypeError:
+        logging.error("Gave up wrapping at %s breaks", breaks)
+        break
+    fontsize, w, h = get_reaming_pixels(txt, text_im)
+    remainder = (im_width*im_height) - (w * h)
+    if prev_remainder > -1:
+        if remainder < prev_remainder:
             best_font_size = fontsize
             best_breaks = breaks
-        prev_remainder = remainder
-        logger.debug("Fontsize: %s (%s, %s), remainder: %s (lower is better)", fontsize, best_font_size, best_breaks, remainder)
+    else:
+        best_font_size = fontsize
+        best_breaks = breaks
+    prev_remainder = remainder
+    logger.debug("Fontsize: %s (%s, %s), remainder: %s (lower is better)", fontsize, best_font_size, best_breaks, remainder)
 
-    font = ImageFont.truetype("arial.ttf", best_font_size)
-    txt = "\n".join(textwrap.wrap(txt_oneline, width=len(txt_oneline)/best_breaks))
-    _, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
-    draw.text(((im_width-text_width)/2, (im_height-text_height)/2), txt, font=font, fill=(0, 0, 0)) # put the text on the image
-    text_im.show()
+font = ImageFont.truetype("arial.ttf", best_font_size)
+txt = "\n".join(textwrap.wrap(txt_oneline, width=len(txt_oneline)/best_breaks))
+_, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
+draw.text(((im_width-text_width)/2, (im_height-text_height)/2), txt, font=font, fill=(0, 0, 0)) # put the text on the image
+text_im.show()
 ````
