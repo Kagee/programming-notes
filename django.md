@@ -3,7 +3,6 @@
 
 # Querysets an annotations
 ````python
-   
     qs = OrderItem.objects.filter(pk=pk).annotate(
          # stockitem is m2m, quick way to get boolean "has any stockitems"
         stockitem_count=Count("stockitem"),
