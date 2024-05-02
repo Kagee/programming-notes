@@ -4,10 +4,12 @@
 # Querysets and annotations
 ## Efficient way to check if a m2m field has any values
 ````python
-    qs = OrderItem.objects.filter(pk=pk).annotate(
+    # get_object_or_404 will do the pk filtering
+    qs = OrderItem.objects.annotate(
          # stockitem is m2m, quick way to get boolean "has any stockitems"
         stockitem_count=Count("stockitem"),
     )
+    oi = get_object_or_404(qs, pk=pk)
 ````
 
 # Return file directly
