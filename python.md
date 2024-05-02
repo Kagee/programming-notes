@@ -110,7 +110,7 @@ with HTTPServer(('0.0.0.0', 8013), handler) as server:
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import logging
-
+import time
 logging.basicConfig(level=logging.DEBUG,
                     style='{',
                     format='{asctime} [{levelname}] {message} ({name}:{module})',
@@ -146,13 +146,15 @@ best_font_size = -1
 best_breaks = -1 
 prev_remainder = -1
 
+start_time = time.time()
+
 # Loop over up to 15 text wrappings, find the image that has the least unuses pixels,
 # and that textwrap can wrap the text for (no TypeError)
 for breaks in range(1,15):
     try:
         txt = "\n".join(textwrap.wrap(txt_oneline, width=len(txt_oneline)/breaks))
     except TypeError:
-        logging.error("Gave up wrapping at %s breaks", breaks)
+        #logging.error("Gave up wrapping at %s breaks", breaks)
         break
     fontsize, w, h = get_reaming_pixels(txt, text_im)
     remainder = (im_width*im_height) - (w * h)
@@ -164,8 +166,8 @@ for breaks in range(1,15):
         best_font_size = fontsize
         best_breaks = breaks
     prev_remainder = remainder
-    logger.debug("Fontsize: %s (%s, %s), remainder: %s (lower is better)", fontsize, best_font_size, best_breaks, remainder)
-
+    #logger.debug("Fontsize: %s (%s, %s), remainder: %s (lower is better)", fontsize, best_font_size, best_breaks, remainder)
+print("--- %s seconds ---" % (time.time() - start_time))
 font = ImageFont.truetype("arial.ttf", best_font_size)
 txt = "\n".join(textwrap.wrap(txt_oneline, width=len(txt_oneline)/best_breaks))
 _, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
