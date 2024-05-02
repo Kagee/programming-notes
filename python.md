@@ -124,7 +124,8 @@ text_im = Image.new(
 )
 
 draw = ImageDraw.Draw(text_im)
-txt_oneline = "10/20/30pcs NdFeB Magnet Diametrically Magnetized Rod Diameter 6x2 mm Experiment Precision Instrumentation Magnets 6*2 mm"
+txt_oneline = ("10/20/30pcs NdFeB Magnet Diametrically Magnetized Rod "
+                "Diameter 6x2 mm Experiment Precision Instrumentation Magnets 6*2 mm")
 
 def get_reaming_pixels(txt, text_im):
     fontsize = 1  # starting font size
@@ -154,7 +155,7 @@ for breaks in range(1,15):
     try:
         txt = "\n".join(textwrap.wrap(txt_oneline, width=len(txt_oneline)/breaks))
     except TypeError:
-        #logging.error("Gave up wrapping at %s breaks", breaks)
+        logging.error("Gave up wrapping at %s breaks", breaks)
         break
     fontsize, w, h = get_reaming_pixels(txt, text_im)
     remainder = (im_width*im_height) - (w * h)
@@ -162,11 +163,18 @@ for breaks in range(1,15):
         if remainder < prev_remainder:
             best_font_size = fontsize
             best_breaks = breaks
+        else:
+            break
     else:
         best_font_size = fontsize
         best_breaks = breaks
     prev_remainder = remainder
-    #logger.debug("Fontsize: %s (%s, %s), remainder: %s (lower is better)", fontsize, best_font_size, best_breaks, remainder)
+    logger.debug(
+        "Fontsize: %s (%s, %s), remainder: %s (lower is better)", 
+        fontsize, 
+        best_font_size, 
+        best_breaks, 
+        remainder)
 print("--- %s seconds ---" % (time.time() - start_time))
 font = ImageFont.truetype("arial.ttf", best_font_size)
 txt = "\n".join(textwrap.wrap(txt_oneline, width=len(txt_oneline)/best_breaks))
