@@ -12,6 +12,18 @@
     oi = get_object_or_404(qs, pk=pk)
 ````
 
+# Templating
+## Make list in template
+````jinja
+ {% with "storage project category orderitems" as select_ids %}
+    {% if field.name in select_ids.split %}
+        {{ field | add_class:"multiselect-dropdown-upgrade" | as_crispy_field }}
+    {% else %}
+        {{ field | as_crispy_field }}
+    {% endif %}
+{% endwith %}
+````
+
 # Return file directly
 ````python
 path(
