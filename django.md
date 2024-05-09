@@ -13,6 +13,16 @@
 ````
 
 # Templating
+## Add active class to current page in menu
+````jinja
+<li>
+  {% url 'storage-list' as link %}
+  <a class="nav-link{% if request.path == link %} active{% endif %}"
+     aria-current="page"
+     href="{{ link }}">Storage</a>
+</li>
+````
+
 ## Make list in template
 ````jinja
  {% with "storage project category orderitems" as select_ids %}
