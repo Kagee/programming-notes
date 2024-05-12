@@ -43,3 +43,29 @@ path(
     ),
 ),
 ````
+
+# Read uploaded file twice
+````python
+def save(self, *args, **kwargs) -> None:
+    self.thumnail_sha1 = ""
+
+    buf = BytesIO()
+    if self.thumbnail:
+        with self.thumbnail.open("rb") as f:
+            tbhash = hashlib.sha1()  # noqa: S324
+            if f.multiple_chunks():
+                for chunk in f.chunks():
+                    tbhash.update(chunk)
+                    buf.write(chunk)
+            else:
+                data = f.read()
+                tbhash.update(data)
+                buf.write(data)
+            self.thumnail_sha1 = tbhash.hexdigest()
+        buffile = ImageFile(buf)
+        self.thumbnail.file = buffile
+    # If we did not do above, this will fail when it can not
+    # .seek(0) on the uploaded file (it will work without
+    # if the upload comes from a management command)
+    super().save(*args, **kwargs)
+````
