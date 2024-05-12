@@ -69,3 +69,13 @@ def save(self, *args, **kwargs) -> None:
     # if the upload comes from a management command)
     super().save(*args, **kwargs)
 ````
+
+# django-select2 ajax data + preselected
+````
+in ...View.get_form:
+        form.fields["tags"].widget.choices = [
+            (x["name"], x["name"]) for x in self.object.tags.all().values()
+        ]
+
+Make a widget that overrides ModelSelect2TagWidget, override create_option, and set selected to "selected".
+````
