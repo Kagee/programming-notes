@@ -21,6 +21,12 @@ if __name__ == "__main__":
 
 ````
 
+# ENV vars
+````python
+import os
+v = os.environ['V'] if 'V' in os.environ else intput("V?")
+````
+
 # Dates
 ````python
 from datetime import datetime
