@@ -2,11 +2,13 @@
 ````python
 #!/usr/bin/env python3
 import logging
-
+# import sys
 logging.basicConfig(level=logging.DEBUG,
                     style='{',
                     format='{asctime} [{levelname}] {message} ({name}:{module})',
-                    handlers=[logging.StreamHandler()])
+                    handlers=[logging.StreamHandler()],
+                    # stream=sys.stderr # replaces handlers above
+                    )
 
 logger = logging.getLogger(__name__)
 
