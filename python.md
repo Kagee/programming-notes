@@ -3,6 +3,9 @@
 #!/usr/bin/env python3
 import logging
 # import sys
+
+
+
 logging.basicConfig(level=logging.DEBUG,
                     style='{',
                     format='{asctime} [{levelname}] {message} ({name}:{module})',
@@ -15,6 +18,11 @@ logger = logging.getLogger(__name__)
 # Argparse http://kitakitsune.org/argparse_builder/
 
 def main():
+    parser.add_argument("--log-level",
+                        default="INFO",
+                        choices=["ERROR", "WARN", "INFO", "DEBUG"],
+                        help='set log level')
+    logger.setLevel(args.log_level)
     print("hello world")
 
 
