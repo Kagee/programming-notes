@@ -1,4 +1,17 @@
+# TOC
+
+* [Boilerplate main file](#boilerplate-main-file)
+* [pathlib (Path)](#pathlib-path)
+* [requests](#requests)
+* [ENV vars](#env-vars)
+* [Dates](#dates)
+* [JSON](#json)
+* [Logging](#logging)
+* [HTTP server](#http-server)
+* [PIL fit text in image](#pil-fit-text-in-image)
+  
 # Boilerplate main file
+
 ````python
 #!/usr/bin/env python3
 import logging
