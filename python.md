@@ -31,6 +31,16 @@ if __name__ == "__main__":
 
 ````
 
+# pathlib (Path)
+````python
+from pathlib import Path
+somefile = Path('/tmp/sub1/sub2/somefile.json')
+somefile.parent.mkdir(parents=True, exist_ok=True)
+if not somefile.is_file():
+    with somefile.open("w") as f:
+        print("Hello world", file=f)
+
+````
 # requests
 ````python
 s = requests.Session()
