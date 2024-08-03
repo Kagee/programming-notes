@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>HTML 5 Boilerplate</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script type="text/javascript" src="script.js"></script>
   </head>
   <body>
 	<p>Hello world</p>
