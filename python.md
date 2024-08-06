@@ -17,8 +17,6 @@
 import logging
 # import sys
 
-
-
 logging.basicConfig(level=logging.DEBUG,
                     style='{',
                     format='{asctime} [{levelname}] {message} ({name}:{module})',
@@ -28,14 +26,24 @@ logging.basicConfig(level=logging.DEBUG,
 
 logger = logging.getLogger(__name__)
 
-# Argparse http://kitakitsune.org/argparse_builder/
-
 def main():
+    parser = argparse.ArgumentParser()
+    # Argparse http://kitakitsune.org/argparse_builder/
     parser.add_argument("--log-level",
                         default="INFO",
                         choices=["ERROR", "WARN", "INFO", "DEBUG"],
                         help='set log level')
+    cmds = parser.add_subparsers(dest="cmd")
+    ui = cmds.add_parser("user-info")
+    ui.add_argument(
+                dest="userid",
+                )
+    aui = cmds.add_parser("all-user-info")
+
+    args = parser.parse_args()
+
     logger.setLevel(args.log_level)
+
     print("hello world")
 
 
