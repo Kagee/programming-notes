@@ -9,7 +9,9 @@
 * [Logging](#logging)
 * [HTTP server](#http-server)
 * [PIL fit text in image](#pil-fit-text-in-image)
-  
+* [SQLite3](#sqlite3)
+
+
 # Boilerplate main file
 
 ````python
@@ -238,4 +240,24 @@ txt = "\n".join(textwrap.wrap(txt_oneline, width=len(txt_oneline)/best_breaks))
 _, _, text_width, text_height = draw.textbbox((0, 0), txt, font=font)
 draw.text(((im_width-text_width)/2, (im_height-text_height)/2), txt, font=font, fill=(0, 0, 0)) # put the text on the image
 text_im.show()
+````
+
+# SQLite3
+````python
+import sqlite3
+con = sqlite3.connect("tutorial.db")
+cur = con.cursor()
+cur.execute("CREATE TABLE movie(title, year, score)")
+# tables
+res = cur.execute("SELECT name FROM sqlite_master")
+res.fetchone()
+# ('movie',)
+cur.execute("""
+    INSERT INTO movie VALUES
+        ('Monty Python and the Holy Grail', 1975, 8.2),
+        ('And Now for Something Completely Different', 1971, 7.5)
+""")
+res = cur.execute("SELECT score FROM movie")
+res.fetchall()
+# [(8.2,), (7.5,)]
 ````
