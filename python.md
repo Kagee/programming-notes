@@ -123,6 +123,8 @@ Just serve cwd as webpage: `python3 -m http.server 9900`
 
 Server for debugging incomming data:
 ````python
+import logging
+logger = logging.getLogger(__name__)
 from http.server import BaseHTTPRequestHandler, HTTPServer
 # pip install multipart  https://github.com/defnull/multipart
 # NOT python3-multipart
