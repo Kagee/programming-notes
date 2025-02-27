@@ -1,3 +1,8 @@
+# Select objects on matching value
+````
+tail -f file.log  | jq 'select(.event_name=="login")'
+````
+
 # String concat
 ````
 jq '.[] | "\(.id) \(.name)"
