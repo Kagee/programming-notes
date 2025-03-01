@@ -108,7 +108,7 @@ logging.config.dictConfig(LOGGING_CONFIG)
 
 #  or dictconfig
 logging.basicConfig(level=logging.DEBUG,
-                    style='{'
+                    style='{',
                     format='{asctime} [{levelname}] {message} ({name}:{module})',
                     handlers=[
                               # logging.FileHandler(f"{os.path.basename(__file__)}.log"),
