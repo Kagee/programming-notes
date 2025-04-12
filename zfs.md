@@ -1,9 +1,20 @@
 # ZFS
 
 # Datasets
+* `zfs create tank/anewdataset`
 * `zfs list`
 * `zfs list -r -o name,type,available,used,referenced,written,usedbydataset,usedbychildren,usedbysnapshots POOL/DATASET`
-  
+
+# Snapshots
+* `zfs list -t all`
+* `zfs list -t snapshots`
+* `zfs get all tank/data | grep auto-snapshot`
+* `zfs inherit com.sun:auto-snapshot:daily tank/data` # will delete/remove if unset on parent
+* `zfs destroy tank/data@zfs-auto-snap_daily-2025-04-12-1911`
+* `zfs set com.sun:auto-snapshot=true tank/data` # enable zfs-auto-snapshot (all cronjobs enabled by default)
+* `zfs set com.sun:auto-snapshot:frequent=false tank/data` # disable */15 min snapshots
+* `zfs set com.sun:auto-snapshot:hourly=false tank/data` # disable hourly snapshots
+
 ## Pool
 * `zpool status`
 * `zpool list`
